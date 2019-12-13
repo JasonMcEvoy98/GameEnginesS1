@@ -30,6 +30,7 @@ public class SoundVisual : MonoBehaviour
     private void SpawnLine()
     {
         visualScale = new float[amnVisual];
+        visualList = new Transform[amnVisual];
 
     for (int i = 0; i < amnVisual; i++)
         {
@@ -61,7 +62,7 @@ public class SoundVisual : MonoBehaviour
         //sound spectrum DATA
         source.GetSpectrumData(spectrum, 0, FFTWindow.BlackmanHarris);
 
-        //Pitch
+       
         
     }
 }
