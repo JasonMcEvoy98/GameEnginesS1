@@ -9,6 +9,10 @@ public class SoundVisual : MonoBehaviour
     public float dbValue;
     public float pitchValue;
 
+    public float maxVisualScale = 25.0f;
+    public float visualModifier = 50.0f;
+    public float smoothSpeed = 10.0f;
+
     private AudioSource source;
     private float[] samples;
     private float[] spectrum;
@@ -16,7 +20,7 @@ public class SoundVisual : MonoBehaviour
 
     private Transform[] visualList;
     private float[] visualScale;
-    private int amnVisual = 10;
+    private int amnVisual =64 ;
 
     private void Start()
     {
@@ -39,9 +43,40 @@ public class SoundVisual : MonoBehaviour
             visualList[i].position = Vector3.right * i;
         }
             }
+
     private void Update()
     {
         AnalyzeSound();
+        UpdateVisual();
+    }
+    private void UpdateVisual()
+    {
+        int visualIndex = 0;
+        int spectrumIndex = 0;
+        int averageSize = SAMPLE_SIZE / amnVisual;
+
+        while (visualIndex < amnVisual)
+        {
+            int j = 0;
+            float sum = 0;
+            while (j < averageSize)
+            {
+                sum += spectrum[spectrumIndex];
+                spectrumIndex++;
+                j++;
+            }
+
+            float scaleY = sum / averageSize * visualModifier;
+            visualScale[visualIndex] -= Time.deltaTime * smoothSpeed;
+            if (visualScale[visualIndex] < scaleY)
+                visualScale[visualIndex] = scaleY;
+
+            if (visualScale[visualIndex] > maxVisualScale)
+                visualScale[visualIndex] = maxVisualScale;
+
+            visualList[visualIndex].localScale = Vector3.one + Vector3.up * visualScale[visualIndex];
+            visualIndex++;
+        }
     }
     private void AnalyzeSound()
     {
