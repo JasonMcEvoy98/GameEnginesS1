@@ -9,7 +9,7 @@ public class SoundVisual : MonoBehaviour
     public float dbValue;
     public float pitchValue;
 
-    public float backgroundIntensitiy;
+    public float backgroundIntensity;
     public Material backgroundMaterial;
     public Color minColor;
     public Color maxColor;
@@ -78,6 +78,15 @@ public class SoundVisual : MonoBehaviour
     {
         AnalyzeSound();
         UpdateVisual();
+        UpdateBackground();
+    }
+    private void UpdateBackground()
+    {
+        backgroundIntensity -= Time.deltaTime * 0.5f;
+        if (backgroundIntensity < dbValue / 40)
+            backgroundIntensity = dbValue /40;
+
+        backgroundMaterial.color = Color.Lerp(maxColor, minColor, -backgroundIntensity);
     }
     private void UpdateVisual()
     {
