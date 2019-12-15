@@ -9,6 +9,12 @@ public class SoundVisual : MonoBehaviour
     public float dbValue;
     public float pitchValue;
 
+    public float backgroundIntensitiy;
+    public Material backgroundMaterial;
+    public Color minColor;
+    public Color maxColor;
+
+
     public float maxVisualScale = 25.0f;
     public float visualModifier = 50.0f;
     public float smoothSpeed = 10.0f;
