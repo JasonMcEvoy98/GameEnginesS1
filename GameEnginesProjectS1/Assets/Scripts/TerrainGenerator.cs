@@ -8,15 +8,25 @@ public class TerrainGenerator : MonoBehaviour
     public int height = 256;
     public float scale = 20f;
 
+    public float offsetX = 100f;
+    public float offsetY = 100f;
 
     void Start()
     {
+        offsetX = Random.Range(offsetX, 9999f);
+        offsetY = Random.Range(offsetY, 9999f);
+    }
+    void Update()
+    {
         Terrain terrain = GetComponent<Terrain>();
         terrain.terrainData = GenerateTerrain(terrain.terrainData);
+
+        offsetX += Time.deltaTime * 1f;
     }
 
     TerrainData GenerateTerrain( TerrainData terrainData)
     {
+        terrainData.heightmapResolution = width + 1;
         terrainData.size = new Vector3(width, depth, height);
         terrainData.SetHeights(0, 0, GenerateHeights());
         return terrainData;
@@ -31,21 +41,15 @@ public class TerrainGenerator : MonoBehaviour
             {
                 heights[x, y] = CalculateHeight(x, y);
             }
-        }
-        return heights;
+        }  return heights;
     }
 
     float CalculateHeight (int x, int y)
     {
-        float xCoord = x / width * scale;
-        float yCoord = y / height * scale;
+        float xCoord = (float) x / width * scale + offsetX;
+        float yCoord = (float) y / height * scale + offsetY;
 
         return Mathf.PerlinNoise(xCoord, yCoord);
     }
 
-
-    void Update()
-    {
-        
-    }
 }
